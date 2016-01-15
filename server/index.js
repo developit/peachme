@@ -29,7 +29,7 @@ function login(callback) {
 	if (peach.currentLogin && typeof peach.currentLogin.then==='function') {
 		return peach.currentLogin.then(callback);
 	}
-	delete peach._token;
+	peach._token = '';
 	peach.currentLogin = peach.login();
 	peach.currentLogin.then( () => {
 		peach.currentLogin = null;
