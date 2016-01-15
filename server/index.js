@@ -26,7 +26,10 @@ function login(callback) {
 	let now = Date.now();
 	if ( (now - peach.lastLogin) < 60 * 1000 ) return callback();
 	peach.lastLogin = now;
-	if (peach.currentLogin && peach.currentLogin.then) return peach.currentLogin.then(callback);
+	if (peach.currentLogin && typeof peach.currentLogin.then==='function') {
+		return peach.currentLogin.then(callback);
+	}
+	delete peach._token;
 	peach.currentLogin = peach.login();
 	peach.currentLogin.then( () => {
 		peach.currentLogin = null;
