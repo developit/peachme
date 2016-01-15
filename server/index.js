@@ -23,14 +23,16 @@ let peach = new Peach({
 peach.request = (...args) => request(peach.getOptions(...args));
 
 function follow({ id, name }, callback) {
-	peach.login().then( () => {
-		peach.getConnections().then( c => {
-			let reqs = c && c.data && c.data.inboundFriendRequests || [],
-				toFriend = reqs.filter( r => (r.stream.id===id || r.stream.name===name) )[0];
-			if (!toFriend) return callback('Not found');
-			peach.request(`/friend-request/${encodeURIComponent(toFriend.id)}/accept`, 'POST').then( () => callback(null, 'Accepted') );
+	try {
+		peach.login().then( () => {
+			peach.getConnections().then( c => {
+				let reqs = c && c.data && c.data.inboundFriendRequests || [],
+					toFriend = reqs.filter( r => (r.stream.id===id || r.stream.name===name) )[0];
+				if (!toFriend) return callback('Not found');
+				peach.request(`/friend-request/${encodeURIComponent(toFriend.id)}/accept`, 'POST').then( () => callback(null, 'Accepted') );
+			});
 		});
-	});
+	} catch(e) {}
 }
 
 app.post('/follow', (req, res) => {
