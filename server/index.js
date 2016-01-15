@@ -27,6 +27,7 @@ function login(callback) {
 	if ( (now - peach.lastLogin) < 60 * 1000 ) return callback();
 	peach.lastLogin = now;
 	if (peach.currentLogin) return peach.currentLogin.then(callback);
+	peach.currentLogin = peach.login();
 	peach.currentLogin.then( () => {
 		peach.currentLogin = null;
 		callback();
@@ -55,12 +56,13 @@ function follow({ id, name }, callback) {
 		});
 	} catch(e) {
 		callback('Unknown error');
+		throw e;
 	}
 }
 
 app.post('/follow', (req, res) => {
 	follow(req.body, (err, message) => {
-		if (err) res.sendStatus(500);
+		if (err) res.status(500).send(err);
 		else res.json({ message });
 	});
 });
