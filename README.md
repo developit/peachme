@@ -1,6 +1,8 @@
 peachme
 =======
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/developit/peachme.svg)](https://greenkeeper.io/)
+
 Auto-follow users on Peach. Based on [peach-client](http://npm.im/peach-client).
 
 > Deploy this to Heroku or Dokku and set `PEACH_EMAIL` + `PEACH_PASSWORD` for instant sucess.
